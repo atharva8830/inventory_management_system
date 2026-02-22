@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block lion %}
+  <div class="jumbotron" align="center">
+
+      <H1 style="margin-bottom: 30px;">login page</H1>
+      
+      {% if flag == 1 %}
+        <h4 style="color: red;">Wrong crediantials </h4>
+      {% endif %}
+        
+      <form method = 'post'>
+          {{form.as_p}}
+          {% csrf_token %}
+          <input type="submit">
+        </form>
+    </div>
+{% endblock lion %}

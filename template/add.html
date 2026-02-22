@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+
+
+
+{% block lion %}
+
+    <div class="jumbotron" align="center">
+        <h1>Add your product here </h1>
+        <form method="post">
+            {{form.as_p}}
+            <input type="submit" class="btn btn-success">
+            {% csrf_token %}
+        </form>
+    </div>
+
+{% endblock lion %}
+    
