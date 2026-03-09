@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+
+
+{% block lion %}
+
+<div>
+    <h2>Inventory Dashboard</h2>
+</div>
+
+<div style="display: flex; flex-direction: row; justify-content: space-around; flex-wrap: wrap;">
+
+
+    <div class="card" style="width: 50rem;">
+        <div class="card-body">
+            <canvas id="stockChart" width="400" height="200"></canvas>
+
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+            <script>
+
+                const ctx = document.getElementById('stockChart');
+
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Stock In', 'Stock Out'],
+                        datasets: [{
+                            label: 'Inventory Movement',
+                            data: [{{ stock_in }}, {{ stock_out }}],
+                    backgroundColor: ['green', 'red']
+                }]
+   },
+                    options: {
+                    responsive: true
+                }
+  });
+
+            </script>
+
+        </div>
+    </div>
+
+
+    <div class="card" style="width: 30rem;">
+        <div class="card-body">
+            <canvas id="categoryChart"></canvas>
+
+            <script>
+                const ctx2 = document.getElementById('categoryChart');
+
+                new Chart(ctx2, {
+                    type: 'pie',
+                    data: {
+                        labels: {{ labels| safe}},
+                    datasets: [{
+                        data: {{ data| safe}},
+                    backgroundColor: [
+                        '#ff6384',
+                        '#36a2eb',
+                        '#ffce56',
+                        '#4bc0c0'
+                    ]
+  }]
+ }
+});
+            </script>
+
+        </div>
+    </div>
+
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h3>Low Stock Products</h3>
+
+            <canvas id="lowStockChart"></canvas>
+
+            <script>
+
+                const ctx3 = document.getElementById('lowStockChart');
+
+                new Chart(ctx3, {
+                    type: 'bar',
+                    data: {
+                        labels: {{ low_labels| safe }},
+                    datasets: [{
+                        label: 'Low Stock Quantity',
+                        data: {{ low_data| safe }},
+                    backgroundColor: 'orange'
+  }]
+ },
+                    options: {
+                    responsive: true
+                }
+});
+
+            </script>
+        </div>
+    </div>
+
+</div>
+{% endblock lion %}

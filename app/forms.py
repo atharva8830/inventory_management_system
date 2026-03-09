@@ -1,5 +1,5 @@
 from django import forms 
-from .models import Product,Supplier,Category
+from .models import Product,Supplier,Category , InventoryTransaction
 
 class login_form(forms.Form):
     username = forms.CharField(
@@ -26,5 +26,10 @@ class productForm(forms.ModelForm):
 class supplierForm (forms.ModelForm):
     class Meta :
         model = Supplier
+        fields = '__all__'
+        
+class transForm(forms.ModelForm):
+    class Meta:
+        model = InventoryTransaction
         fields = '__all__'
         

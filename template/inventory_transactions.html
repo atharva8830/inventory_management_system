@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+
+{% block lion %}
+    
+<div class="jumbotron" align = "center">
+    <h1>here are the Inventory transactions </h1>
+
+    <table   class="table" align = "center">
+        <thead  class="thead-dark" >
+            <tr>
+
+                <th>id</th>
+                <th>type</th>
+                <th>quantity</th>
+                <th>created_at</th>
+                <th>product</th>
+                <th>supplier</th>
+            </tr>
+            </thead>
+        <tbody>
+            
+            {% for t in transactions %}
+            <tr>
+                <td>{{t.id}}</td>
+                <td>{{t.transaction_type}}</td>
+                <td>{{t.quantity}}</td> 
+                <td>{{t.created_at}}</td> 
+                <td>{{t.product}}</td> 
+                <td>{{t.supplier}}</td> 
+            </tr>
+                {% endfor %}
+            </tbody>
+    </table>
+        
+        <a href = "/invenForm/" class="btn btn-success">enter here</a>
+</div>
+{% endblock lion %}
+    

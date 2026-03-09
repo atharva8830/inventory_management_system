@@ -31,3 +31,39 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+    
+
+class InventoryTransaction(models.Model):
+
+    TRANSACTION_TYPES = (
+        ('IN', 'Stock In'),
+        ('OUT', 'Stock Out'),
+    )
+
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    supplier = models.ForeignKey(Supplier, on_delete=models.SET_NULL, null=True, blank=True)
+
+    transaction_type = models.CharField(max_length=3, choices=TRANSACTION_TYPES)
+    quantity = models.PositiveIntegerField()
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+
+        product = self.product
+
+        if self.transaction_type == 'IN':
+            product.quantity += self.quantity
+
+        elif self.transaction_type == 'OUT':
+            if product.quantity >= self.quantity:
+                product.quantity -= self.quantity
+            else:
+                raise ValueError("Not enough stock available")
+
+        product.save()
+
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.product.name} - {self.transaction_type} - {self.quantity}"

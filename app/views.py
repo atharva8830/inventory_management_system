@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect , get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate , login , logout
-from .forms import login_form , reg_form , productForm, supplierForm
+from .forms import login_form , reg_form , productForm, supplierForm, transForm
 from django.contrib.auth.models import User
 from django.http import HttpResponse
-from .models import Product , Category , Supplier
+from .models import Product , Category , Supplier , InventoryTransaction
+from django.db.models import Count
 
 
 def base_view(request):
@@ -126,3 +127,59 @@ def update_supplier(request , id):
 
     form = supplierForm(instance = supp)
     return render (request , 'update_supplier.html' , {'form' : form})
+
+
+def inventory_transactions(request):
+
+    transactions = InventoryTransaction.objects.all().order_by('-created_at')
+
+    return render(request, 'inventory_transactions.html', {'transactions': transactions})
+
+
+def invForm (request):
+    form = transForm()
+
+    if request.method == 'POST':
+        form = transForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('trans')
+
+    return render (request , 'invenForm.html' , {'form' : form})
+
+
+def dashboard(request):
+
+    # Stock movement
+    stock_in = InventoryTransaction.objects.filter(
+        transaction_type='IN'
+    ).count()
+
+    stock_out = InventoryTransaction.objects.filter(
+        transaction_type='OUT'
+    ).count()
+
+    # Category chart
+    category_data = Product.objects.values('category__name').annotate(
+        total=Count('id')
+    )
+
+    labels = [item['category__name'] for item in category_data]
+    data = [item['total'] for item in category_data]
+
+    # Low stock products
+    low_products = Product.objects.filter(quantity__lt=10)
+
+    low_labels = [p.name for p in low_products]
+    low_data = [p.quantity for p in low_products]
+
+    context = {
+        'stock_in': stock_in,
+        'stock_out': stock_out,
+        'labels': labels,
+        'data': data,
+        'low_labels': low_labels,
+        'low_data': low_data
+    }
+
+    return render(request, 'dashboard.html', context)

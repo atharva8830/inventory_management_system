@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Supplier, Product
+from .models import Category, Supplier, Product , InventoryTransaction
 
 
 class proadmin(admin.ModelAdmin):
@@ -12,6 +12,11 @@ class catadmin(admin.ModelAdmin):
 class supadmin(admin.ModelAdmin):
     list_display = ['name', 'email', 'phone', 'address', 'created_at', ]
 
+class InventoryTransactionadmin(admin.ModelAdmin) :
+    list_display = ['id', 'product', 'supplier', 'transaction_type', 'quantity', 'created_at',]
+
+
 admin.site.register(Category , catadmin)
 admin.site.register(Product, proadmin)
-admin.site.register(Supplier)
+admin.site.register(Supplier, supadmin)
+admin.site.register(InventoryTransaction , InventoryTransactionadmin)

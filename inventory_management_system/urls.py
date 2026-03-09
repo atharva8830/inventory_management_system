@@ -20,6 +20,7 @@ from django.urls import path
 from app import views
 
 urlpatterns = [
+
     path("admin/", admin.site.urls),
     path("", views.landing_view),
     path("home/", views.home_view ,  name = 'home'),
@@ -35,4 +36,8 @@ urlpatterns = [
     path("add_sup/", views.add_supplier, name = 'add_sup'),
     path("del_sup/<int:id>", views.del_supplier, name = 'del_sup'),
     path("update_sup/<int:id>", views.update_supplier, name = 'update_sup'),
+    path("trans/", views.inventory_transactions, name = 'trans'),
+    path("invenForm/", views.invForm ),
+    path("dash/", views.dashboard ),
+
 ]

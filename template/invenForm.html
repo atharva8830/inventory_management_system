@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+
+
+{% block lion %}
+    <div class="jumbotron">
+        <form method="post" >
+
+            {{form.as_p}}
+            {% csrf_token %}
+            <button type="submit">Save</button>
+
+        </form>
+    </div>
+
+{% endblock lion %}
+    
