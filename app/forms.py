@@ -21,7 +21,10 @@ class productForm(forms.ModelForm):
     class Meta :
         model = Product
         fields = '__all__'
+
+
+class supplierForm (forms.ModelForm):
+    class Meta :
+        model = Supplier
+        fields = '__all__'
         
-
-
-

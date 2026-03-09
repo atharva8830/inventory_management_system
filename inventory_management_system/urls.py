@@ -31,4 +31,8 @@ urlpatterns = [
     path("add/", views.add_view, name = 'add'),
     path("del/<int:id>", views.delete_view, name = 'del'),
     path("update/<int:id>", views.update_view, name = 'update'),
+    path("sup/", views.supplier_view, name = 'sup'),
+    path("add_sup/", views.add_supplier, name = 'add_sup'),
+    path("del_sup/<int:id>", views.del_supplier, name = 'del_sup'),
+    path("update_sup/<int:id>", views.update_supplier, name = 'update_sup'),
 ]

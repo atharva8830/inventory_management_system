@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect , get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate , login , logout
-from .forms import login_form , reg_form , productForm
+from .forms import login_form , reg_form , productForm, supplierForm
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from .models import Product , Category , Supplier
@@ -85,6 +85,7 @@ def delete_view(request , id ):
 
 
 def update_view(request , id):
+
     product = get_object_or_404(Product , id = id )
     if request.method == 'POST':
             form = productForm(request.POST, instance=product)
@@ -93,3 +94,35 @@ def update_view(request , id):
                 return redirect('prod')
     form = productForm(instance= product )
     return render (request , 'update.html', {'form' : form})
+
+
+
+def supplier_view(request):
+    data = Supplier.objects.all()
+    return render (request , 'supplier.html' , {'data' : data})
+
+def add_supplier (request):
+
+    if request.method == 'POST':
+        form = supplierForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('sup')
+    form = supplierForm()
+    return render(request , 'add_supplier.html' , {'form' : form})
+
+def del_supplier(request , id):
+    product = get_object_or_404(Supplier , id=id)
+    product.delete()
+    return redirect('sup')
+
+def update_supplier(request , id):
+    supp = get_object_or_404(Supplier , id = id )
+
+    if request.method == 'POST':
+        form = supplierForm(request.POST , instance = supp)
+        form.save()
+        return redirect('sup')
+
+    form = supplierForm(instance = supp)
+    return render (request , 'update_supplier.html' , {'form' : form})
